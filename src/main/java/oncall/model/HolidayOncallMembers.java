@@ -3,10 +3,10 @@ package oncall.model;
 import java.util.List;
 import oncall.exception.Exceptions;
 
-public class WeekdayOncallMembers {
+public class HolidayOncallMembers {
     private final List<Member> members;
 
-    public WeekdayOncallMembers(List<Member> members) {
+    public HolidayOncallMembers(List<Member> members) {
         validateMembers(members);
         this.members = members.stream().map(member -> new Member(member.getName())).toList();
     }
