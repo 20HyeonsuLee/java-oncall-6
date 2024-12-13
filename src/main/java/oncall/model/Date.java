@@ -12,6 +12,14 @@ public class Date {
         this.day = day;
     }
 
+    public Month getMonth() {
+        return month;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
     public DayOfWeek getDayOfWeek() {
         return DayOfWeek.values()[(day + month.getFirstDayOfWeek().ordinal()) % 7];
     }

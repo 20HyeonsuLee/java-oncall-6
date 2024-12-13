@@ -12,6 +12,10 @@ public class Month {
         this.firstDayOfWeek = firstDayOfWeek;
     }
 
+    public int getMonth() {
+        return month;
+    }
+
     public DayOfWeek getFirstDayOfWeek() {
         return firstDayOfWeek;
     }
