@@ -3,7 +3,7 @@ package oncall.model;
 import java.util.List;
 
 public class Holiday {
-    private final List<Date> holidays = List.of(
+    private static final List<Date> holidays = List.of(
             new Date(new Month(1, null), 1),
             new Date(new Month(3, null), 1),
             new Date(new Month(5, null), 5),
@@ -14,7 +14,10 @@ public class Holiday {
             new Date(new Month(12, null), 5)
     );
 
-    public boolean isHolidays(Date date) {
+    private Holiday() {
+    }
+
+    public static boolean isHolidays(Date date) {
         if (date.getDayOfWeek() == DayOfWeek.SATURDAY ||
             date.getDayOfWeek() == DayOfWeek.SUNDAY
         ) {

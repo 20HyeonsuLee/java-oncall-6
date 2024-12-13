@@ -15,6 +15,14 @@ public class OncallMembers {
         this.holidayOncallMembers = holidayOncallMembers;
     }
 
+    public HolidayOncallMembers getHolidayOncallMembers() {
+        return holidayOncallMembers;
+    }
+
+    public WeekdayOncallMembers getWeekdayOncallMembers() {
+        return weekdayOncallMembers;
+    }
+
     private void validateOncallMembers(
             WeekdayOncallMembers weekdayOncallMembers,
             HolidayOncallMembers holidayOncallMembers

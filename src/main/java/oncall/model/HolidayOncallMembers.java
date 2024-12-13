@@ -5,6 +5,7 @@ import oncall.exception.Exceptions;
 
 public class HolidayOncallMembers {
     private final List<Member> members;
+    private int currentTurn = 0;
 
     public HolidayOncallMembers(List<Member> members) {
         validateMembers(members);
@@ -13,6 +14,21 @@ public class HolidayOncallMembers {
 
     public int getMembersCount() {
         return this.members.size();
+    }
+
+    public Member getCurrentTurnMember() {
+        return members.get(currentTurn);
+    }
+
+    public void swap() {
+        Member currentTurnMember = members.get(currentTurn);
+        Member nextTurnMember = members.get(currentTurn + 1);
+        members.set(currentTurn, nextTurnMember);
+        members.set(currentTurn + 1, currentTurnMember);
+    }
+
+    public void forwardTurn() {
+        ++currentTurn;
     }
 
     private void validateMembers(List<Member> members) {
