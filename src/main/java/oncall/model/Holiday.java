@@ -3,7 +3,7 @@ package oncall.model;
 import java.util.List;
 
 public class Holiday {
-    List<Date> holidays = List.of(
+    private final List<Date> holidays = List.of(
             new Date(new Month(1, null), 1),
             new Date(new Month(3, null), 1),
             new Date(new Month(5, null), 5),
@@ -24,10 +24,7 @@ public class Holiday {
             if (holiday.getMonth() != date.getMonth()) {
                 return false;
             }
-            if (holiday.getDay() != date.getDay()) {
-                return false;
-            }
-            return true;
+            return holiday.getDay() == date.getDay();
         });
     }
 }
