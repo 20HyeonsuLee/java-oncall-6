@@ -1,5 +1,6 @@
 package oncall.model;
 
+import java.util.Objects;
 import oncall.exception.Exceptions;
 
 public class Month {
@@ -31,8 +32,24 @@ public class Month {
     }
 
     private void validateMonth(int month) {
-        if (month < 0 || month > 12) {
+        if (month < 1 || month > 12) {
             throw Exceptions.INPUT_FORMAT_EXCEPTION.getException();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Month month1)) {
+            return false;
+        }
+        return getMonth() == month1.getMonth() && getFirstDayOfWeek() == month1.getFirstDayOfWeek();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getMonth(), getFirstDayOfWeek());
     }
 }

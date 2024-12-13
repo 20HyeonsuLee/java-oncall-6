@@ -1,58 +1,60 @@
 package oncall.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class OncallScheduleGenerator {
 
-    public List<Member> generateOncallSchedule(OncallMembers oncallMembers, Month month) {
-        List<Member> schdule = new ArrayList<>();
+    public Map<Date, Member> generateOncallSchedule(OncallMembers oncallMembers, Month month) {
+        Map<Date, Member> schdule = new LinkedHashMap<>();
         HolidayOncallMembers holidayOncallMembers = oncallMembers.getHolidayOncallMembers();
         WeekdayOncallMembers weekdayOncallMembers = oncallMembers.getWeekdayOncallMembers();
         for (int i = 1; i <= month.countDays(); ++i) {
             Date date = new Date(month, i);
             if (Holiday.isHolidays(date)) {
-                addHolidaySchedule(schdule, holidayOncallMembers);
+                addHolidaySchedule(schdule, holidayOncallMembers, date);
             } else {
-                addWeekdaySchedule(schdule, weekdayOncallMembers);
+                addWeekdaySchedule(schdule, weekdayOncallMembers, date);
             }
         }
         return schdule;
     }
 
-    private void addHolidaySchedule(List<Member> schedule, HolidayOncallMembers holidayOncallMembers) {
+    private void addHolidaySchedule(Map<Date, Member> schedule, HolidayOncallMembers holidayOncallMembers, Date date) {
         Member member = holidayOncallMembers.getCurrentTurnMember();
         if (isThirdOncall(schedule, member)) {
             holidayOncallMembers.forwardTurn();
-            addHolidaySchedule(schedule, holidayOncallMembers);
+            addHolidaySchedule(schedule, holidayOncallMembers, date);
             return;
         }
-        if (schedule.get(schedule.size() - 1).equals(member)) {
+        if (date.getDay() != 1 && schedule.get(date.prevDate()).equals(member)) {
             holidayOncallMembers.swap();
-            addHolidaySchedule(schedule, holidayOncallMembers);
+            addHolidaySchedule(schedule, holidayOncallMembers, date);
             return;
         }
-        schedule.add(holidayOncallMembers.getCurrentTurnMember());
+        schedule.put(date, holidayOncallMembers.getCurrentTurnMember());
         holidayOncallMembers.forwardTurn();
     }
 
-    private void addWeekdaySchedule(List<Member> schedule, WeekdayOncallMembers weekdayOncallMembers) {
+    private void addWeekdaySchedule(Map<Date, Member> schedule, WeekdayOncallMembers weekdayOncallMembers, Date date) {
         Member member = weekdayOncallMembers.getCurrentTurnMember();
         if (isThirdOncall(schedule, member)) {
             weekdayOncallMembers.forwardTurn();
-            addWeekdaySchedule(schedule, weekdayOncallMembers);
+            addWeekdaySchedule(schedule, weekdayOncallMembers, date);
             return;
         }
-        if (schedule.get(schedule.size() - 1).equals(member)) {
+        if (date.getDay() != 1 && schedule.get(date.prevDate()).equals(member)) {
             weekdayOncallMembers.swap();
-            addWeekdaySchedule(schedule, weekdayOncallMembers);
+            addWeekdaySchedule(schedule, weekdayOncallMembers, date);
             return;
         }
-        schedule.add(weekdayOncallMembers.getCurrentTurnMember());
+        schedule.put(date, weekdayOncallMembers.getCurrentTurnMember());
         weekdayOncallMembers.forwardTurn();
     }
 
-    private boolean isThirdOncall(List<Member> schedule, Member member) {
-        return schedule.stream().filter(scheduleMember -> scheduleMember.equals(member)).count() == 3;
+    private boolean isThirdOncall(Map<Date, Member> schedule, Member member) {
+        return schedule.values()
+                .stream()
+                .filter(scheduleMember -> scheduleMember.equals(member)).count() == 3;
     }
 }

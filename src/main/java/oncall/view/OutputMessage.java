@@ -4,6 +4,7 @@ import java.util.List;
 
 public enum OutputMessage {
 
+    OUTPUT_SCHEDULE("%d월 %d일 %s %s")
     ;
 
     private final String message;

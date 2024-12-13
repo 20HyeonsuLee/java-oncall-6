@@ -17,17 +17,19 @@ public class Holiday {
     private Holiday() {
     }
 
-    public static boolean isHolidays(Date date) {
-        if (date.getDayOfWeek() == DayOfWeek.SATURDAY ||
-            date.getDayOfWeek() == DayOfWeek.SUNDAY
-        ) {
-            return true;
-        }
+    public static boolean isPublicHolidays(Date date) {
         return holidays.stream().anyMatch(holiday -> {
             if (holiday.getMonth() != date.getMonth()) {
                 return false;
             }
             return holiday.getDay() == date.getDay();
         });
+    }
+
+    public static boolean isHolidays(Date date) {
+        return (
+                date.getDayOfWeek() == DayOfWeek.SATURDAY ||
+                date.getDayOfWeek() == DayOfWeek.SUNDAY
+        );
     }
 }
